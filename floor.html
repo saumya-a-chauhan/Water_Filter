@@ -13,7 +13,6 @@
 </head>
 <body>
 <header class="top"><div class="wrap"><div id="brand"></div><div id="lang" class="lang" role="group" aria-label="Language"></div></div></header>
-<div id="demo-banner" class="demo" hidden><p data-i18n="demo"></p></div>
 
 <main class="wrap">
   <a class="back" href="index.html" id="back"></a>
@@ -89,8 +88,9 @@
         <span class="chip ${st}"><i class="dot ${st}"></i>${esc(t(st))}</span>
       </article>`;
     }).join("");
-    const worst = sts.some(s => s === "bad" || s === "none") ? "bad" : sts.includes("warn") ? "warn" : "good";
-    const msg = { good: "allGood", warn: "dueSoon", bad: "needsAttention" }[worst];
+    const known = sts.filter(s => s !== "none");
+    const worst = !known.length ? "none" : known.includes("bad") ? "bad" : known.includes("warn") ? "warn" : "good";
+    const msg = { good: "allGood", warn: "dueSoon", bad: "needsAttention", none: "noneYet" }[worst];
     verdict.innerHTML = `<div class="verdict ${worst}"><span class="pulse"></span><span>${esc(t(msg))}</span></div>`;
   }
 

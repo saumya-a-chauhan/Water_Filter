@@ -17,7 +17,7 @@ The site works in English, Hindi and Punjabi. The staff page opens in Hindi by d
 
 ## Setup: connect the Google Sheet (about 10 minutes, one time)
 
-Until this is done, the site runs in **demo mode**: sample data, stored only in the browser, staff PIN `1234`.
+Until this is done, pages show "Couldn't load the records".
 
 1. Go to [sheets.google.com](https://sheets.google.com) and create a blank sheet named **Saaf Paani Logs**.
 2. In the sheet: **Extensions → Apps Script**.

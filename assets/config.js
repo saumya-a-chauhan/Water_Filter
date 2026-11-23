@@ -1,8 +1,7 @@
 /* ------------------------------------------------------------------
    Saaf Paani — settings
    After deploying the Google Apps Script (see README), paste its
-   Web app URL into API_URL. While API_URL is empty the site runs in
-   DEMO MODE with sample data saved only in the browser.
+   Web app URL into API_URL.
 ------------------------------------------------------------------- */
 window.SAAF_CONFIG = {
   API_URL: "",

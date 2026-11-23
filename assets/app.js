@@ -70,7 +70,6 @@
       missingPin: "Enter the staff PIN",
       badPin: "Wrong PIN. Please try again.",
       saveError: "Something went wrong. Please try again.",
-      demo: "Demo mode: sample data, saved only on this device. Staff PIN is 1234.",
       qrTitle: "QR codes for every pantry",
       qrSub: "Print, cut, and paste one in each floor's pantry, next to the dispenser.",
       print: "Print",
@@ -80,7 +79,9 @@
       footer: "A FEW Nexus project · Plaksha University",
       legend_good: "On schedule",
       legend_warn: "Due soon",
-      legend_bad: "Overdue / no record"
+      legend_bad: "Overdue",
+      legend_none: "No record yet",
+      noneYet: "No cleaning recorded yet for this floor"
     },
     hi: {
       brand: "साफ़ पानी",
@@ -147,7 +148,6 @@
       missingPin: "स्टाफ़ पिन डालें",
       badPin: "पिन गलत है। फिर से कोशिश करें।",
       saveError: "कुछ गड़बड़ हुई। फिर से कोशिश करें।",
-      demo: "डेमो मोड: नमूना डेटा, सिर्फ़ इसी डिवाइस पर सेव होता है। स्टाफ़ पिन 1234 है।",
       qrTitle: "हर पैंट्री के लिए QR कोड",
       qrSub: "प्रिंट करें, काटें, और हर मंज़िल की पैंट्री में डिस्पेंसर के पास चिपकाएँ।",
       print: "प्रिंट करें",
@@ -157,7 +157,9 @@
       footer: "एक FEW नेक्सस प्रोजेक्ट · प्लक्षा यूनिवर्सिटी",
       legend_good: "समय पर",
       legend_warn: "जल्द करना है",
-      legend_bad: "देर / कोई रिकॉर्ड नहीं"
+      legend_bad: "देर हो गई",
+      legend_none: "अभी कोई रिकॉर्ड नहीं",
+      noneYet: "इस मंज़िल की अभी कोई सफ़ाई दर्ज नहीं हुई"
     },
     pa: {
       brand: "ਸਾਫ਼ ਪਾਣੀ",
@@ -224,7 +226,6 @@
       missingPin: "ਸਟਾਫ਼ ਪਿੰਨ ਪਾਓ",
       badPin: "ਪਿੰਨ ਗਲਤ ਹੈ। ਮੁੜ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
       saveError: "ਕੁਝ ਗੜਬੜ ਹੋਈ। ਮੁੜ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
-      demo: "ਡੈਮੋ ਮੋਡ: ਨਮੂਨਾ ਡਾਟਾ, ਸਿਰਫ਼ ਇਸੇ ਡਿਵਾਈਸ 'ਤੇ ਸੇਵ ਹੁੰਦਾ ਹੈ। ਸਟਾਫ਼ ਪਿੰਨ 1234 ਹੈ।",
       qrTitle: "ਹਰ ਪੈਂਟਰੀ ਲਈ QR ਕੋਡ",
       qrSub: "ਪ੍ਰਿੰਟ ਕਰੋ, ਕੱਟੋ, ਅਤੇ ਹਰ ਮੰਜ਼ਿਲ ਦੀ ਪੈਂਟਰੀ ਵਿੱਚ ਡਿਸਪੈਂਸਰ ਕੋਲ ਚਿਪਕਾਓ।",
       print: "ਪ੍ਰਿੰਟ ਕਰੋ",
@@ -234,7 +235,9 @@
       footer: "ਇੱਕ FEW ਨੈਕਸਸ ਪ੍ਰੋਜੈਕਟ · ਪਲਕਸ਼ਾ ਯੂਨੀਵਰਸਿਟੀ",
       legend_good: "ਸਮੇਂ ਸਿਰ",
       legend_warn: "ਜਲਦੀ ਕਰਨਾ ਹੈ",
-      legend_bad: "ਦੇਰ / ਕੋਈ ਰਿਕਾਰਡ ਨਹੀਂ"
+      legend_bad: "ਦੇਰ ਹੋ ਗਈ",
+      legend_none: "ਅਜੇ ਕੋਈ ਰਿਕਾਰਡ ਨਹੀਂ",
+      noneYet: "ਇਸ ਮੰਜ਼ਿਲ ਦੀ ਅਜੇ ਕੋਈ ਸਫ਼ਾਈ ਦਰਜ ਨਹੀਂ ਹੋਈ"
     }
   };
   const LANGS = [
@@ -333,79 +336,24 @@
     return { latest, st };
   }
 
-  /* ---------------- data: Google Apps Script or demo ---------------- */
-  const DEMO = !CFG.API_URL;
-
-  function mulberry32(a) {
-    return function () {
-      a |= 0; a = (a + 0x6D2B79F5) | 0;
-      let t2 = Math.imul(a ^ (a >>> 15), 1 | a);
-      t2 = (t2 + Math.imul(t2 ^ (t2 >>> 7), 61 | t2)) ^ t2;
-      return ((t2 ^ (t2 >>> 14)) >>> 0) / 4294967296;
-    };
-  }
-  function seedDemo() {
-    const rnd = mulberry32(7);
-    const staff = ["Sunita", "Kamla", "Rajni", "Paramjit", "Geeta"];
-    const kids = ["Aarav", "Simran", "Ishaan", "Harleen", "Kabir", "Meher", ""];
-    const pick = a => a[Math.floor(rnd() * a.length)];
-    const out = [];
-    let id = 1;
-    const mk = (h, f, type, ago) => {
-      const date = addDays(todayISO(), -ago);
-      out.push({ id: "d" + id++, loggedAt: date + "T10:00:00", hostel: h, floor: f, type, date, name: pick(staff), witness: pick(kids) });
-    };
-    CFG.HOSTELS.forEach(h => {
-      for (let f = 1; f <= CFG.FLOORS; f++) {
-        let d = Math.floor(rnd() * 17);
-        while (d < 90) { mk(h, f, "filter", d); d += 5 + Math.floor(rnd() * 9); }
-        d = Math.floor(rnd() * 19);
-        while (d < 90) { mk(h, f, "dispenser", d); d += 6 + Math.floor(rnd() * 10); }
-        mk(h, f, "jar", 20 + Math.floor(rnd() * 420));
-      }
-    });
-    return out;
-  }
-  function demoData() {
-    let d = store.get("sp_demo", null);
-    if (!d) { d = seedDemo(); store.set("sp_demo", d); }
-    return d;
-  }
-
+  /* ---------------- data: Google Apps Script ---------------- */
   const API = {
-    demo: DEMO,
     async list(q) {
       q = q || {};
-      let entries;
-      if (DEMO) {
-        entries = demoData();
-      } else {
-        const u = new URL(CFG.API_URL);
-        u.searchParams.set("action", "list");
-        if (q.hostel) u.searchParams.set("hostel", q.hostel);
-        if (q.floor) u.searchParams.set("floor", q.floor);
-        const r = await fetch(u.toString());
-        const j = await r.json();
-        if (!j.ok) throw new Error(j.error || "load_failed");
-        entries = j.entries;
-      }
-      return entries
+      if (!CFG.API_URL) throw new Error("not_connected");
+      const u = new URL(CFG.API_URL);
+      u.searchParams.set("action", "list");
+      if (q.hostel) u.searchParams.set("hostel", q.hostel);
+      if (q.floor) u.searchParams.set("floor", q.floor);
+      const r = await fetch(u.toString());
+      const j = await r.json();
+      if (!j.ok) throw new Error(j.error || "load_failed");
+      return j.entries
         .map(e => Object.assign({}, e, { floor: Number(e.floor) }))
         .filter(e => (!q.hostel || e.hostel === q.hostel) && (!q.floor || e.floor === Number(q.floor)));
     },
     async add(payload) {
-      if (DEMO) {
-        await new Promise(r => setTimeout(r, 500));
-        if (String(payload.pin) !== "1234") return { ok: false, error: "bad_pin" };
-        const d = demoData();
-        const now = new Date().toISOString();
-        payload.types.forEach(type => d.push({
-          id: "u" + Date.now() + type, loggedAt: now, hostel: payload.hostel, floor: payload.floor,
-          type, date: payload.date, name: payload.name || "", witness: payload.witness || ""
-        }));
-        store.set("sp_demo", d);
-        return { ok: true };
-      }
+      if (!CFG.API_URL) return { ok: false, error: "not_connected" };
       // text/plain avoids a CORS preflight, which Apps Script can't answer
       const r = await fetch(CFG.API_URL, { method: "POST", body: JSON.stringify(payload) });
       return r.json();
@@ -430,13 +378,11 @@
     if (brand) {
       brand.innerHTML = `<a href="index.html" class="brand-link"><span class="logo">${ICONS.drop}</span><span class="brand-name" data-i18n="brand"></span></a>`;
     }
-    const banner = document.getElementById("demo-banner");
-    if (banner && DEMO) { banner.hidden = false; }
     applyI18n();
   }
 
   window.SP = {
-    CFG, TYPES, ICONS, API, store, DEMO,
+    CFG, TYPES, ICONS, API, store,
     t, tIn, setLang, applyI18n, get lang() { return lang; },
     todayISO, addDays, daysSince, fmtDate, relDays, statusOf, parseISO,
     esc, pad2, floorUrl, siteBase, sortEntries, latestByType, floorStatus, mountChrome
