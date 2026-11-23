@@ -6,6 +6,21 @@
   /* ---------------- translations ---------------- */
   const I18N = {
     en: {
+      mediaStep: "Photos or videos (optional)",
+      addMedia: "Add photo or video",
+      mediaHint: "Show the clean filter, dispenser or jar. Up to 6 files, videos up to 20 MB.",
+      tooBig: "This video is too big (max 20 MB). Please record a shorter one.",
+      maxFiles: "You can add up to 6 files.",
+      uploading: "Uploading {i} of {n}…",
+      uploadError: "Upload failed. Check the internet and try again.",
+      staffOnly: "Staff & warden only",
+      staffOnlySub: "Enter the staff PIN to open this page.",
+      unlock: "Open",
+      checking: "Checking…",
+      lockPhone: "Lock this phone",
+      lockedOut: "Too many wrong tries. Please wait 10 minutes.",
+      close: "Close",
+      photos: "Photos & videos",
       brand: "Saaf Paani",
       tagline1: "Clean water,",
       tagline2: "on the record.",
@@ -84,6 +99,21 @@
       noneYet: "No cleaning recorded yet for this floor"
     },
     hi: {
+      mediaStep: "फ़ोटो या वीडियो (ज़रूरी नहीं)",
+      addMedia: "फ़ोटो या वीडियो जोड़ें",
+      mediaHint: "साफ़ फ़िल्टर, डिस्पेंसर या बोतल दिखाएँ। 6 फ़ाइलें तक, वीडियो 20 MB तक।",
+      tooBig: "यह वीडियो बहुत बड़ा है (20 MB तक)। छोटा वीडियो बनाएँ।",
+      maxFiles: "ज़्यादा से ज़्यादा 6 फ़ाइलें जोड़ सकते हैं।",
+      uploading: "अपलोड हो रहा है {i} / {n}…",
+      uploadError: "अपलोड नहीं हुआ। इंटरनेट देखकर फिर से कोशिश करें।",
+      staffOnly: "सिर्फ़ स्टाफ़ और वार्डन के लिए",
+      staffOnlySub: "यह पेज खोलने के लिए स्टाफ़ पिन डालें।",
+      unlock: "खोलें",
+      checking: "जाँच हो रही है…",
+      lockPhone: "इस फ़ोन पर लॉक करें",
+      lockedOut: "बहुत बार गलत पिन डाला गया। 10 मिनट रुकें।",
+      close: "बंद करें",
+      photos: "फ़ोटो और वीडियो",
       brand: "साफ़ पानी",
       tagline1: "साफ़ पानी,",
       tagline2: "पूरे रिकॉर्ड के साथ।",
@@ -162,6 +192,21 @@
       noneYet: "इस मंज़िल की अभी कोई सफ़ाई दर्ज नहीं हुई"
     },
     pa: {
+      mediaStep: "ਫ਼ੋਟੋ ਜਾਂ ਵੀਡੀਓ (ਲਾਜ਼ਮੀ ਨਹੀਂ)",
+      addMedia: "ਫ਼ੋਟੋ ਜਾਂ ਵੀਡੀਓ ਜੋੜੋ",
+      mediaHint: "ਸਾਫ਼ ਫ਼ਿਲਟਰ, ਡਿਸਪੈਂਸਰ ਜਾਂ ਬੋਤਲ ਦਿਖਾਓ। 6 ਫ਼ਾਈਲਾਂ ਤੱਕ, ਵੀਡੀਓ 20 MB ਤੱਕ।",
+      tooBig: "ਇਹ ਵੀਡੀਓ ਬਹੁਤ ਵੱਡਾ ਹੈ (20 MB ਤੱਕ)। ਛੋਟਾ ਵੀਡੀਓ ਬਣਾਓ।",
+      maxFiles: "ਵੱਧ ਤੋਂ ਵੱਧ 6 ਫ਼ਾਈਲਾਂ ਜੋੜ ਸਕਦੇ ਹੋ।",
+      uploading: "ਅੱਪਲੋਡ ਹੋ ਰਿਹਾ ਹੈ {i} / {n}…",
+      uploadError: "ਅੱਪਲੋਡ ਨਹੀਂ ਹੋਇਆ। ਇੰਟਰਨੈੱਟ ਦੇਖ ਕੇ ਮੁੜ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
+      staffOnly: "ਸਿਰਫ਼ ਸਟਾਫ਼ ਅਤੇ ਵਾਰਡਨ ਲਈ",
+      staffOnlySub: "ਇਹ ਪੰਨਾ ਖੋਲ੍ਹਣ ਲਈ ਸਟਾਫ਼ ਪਿੰਨ ਪਾਓ।",
+      unlock: "ਖੋਲ੍ਹੋ",
+      checking: "ਜਾਂਚ ਹੋ ਰਹੀ ਹੈ…",
+      lockPhone: "ਇਸ ਫ਼ੋਨ 'ਤੇ ਲਾਕ ਕਰੋ",
+      lockedOut: "ਬਹੁਤ ਵਾਰ ਗਲਤ ਪਿੰਨ ਪਾਇਆ ਗਿਆ। 10 ਮਿੰਟ ਰੁਕੋ।",
+      close: "ਬੰਦ ਕਰੋ",
+      photos: "ਫ਼ੋਟੋ ਅਤੇ ਵੀਡੀਓ",
       brand: "ਸਾਫ਼ ਪਾਣੀ",
       tagline1: "ਸਾਫ਼ ਪਾਣੀ,",
       tagline2: "ਪੂਰੇ ਰਿਕਾਰਡ ਨਾਲ।",
@@ -352,6 +397,17 @@
         .map(e => Object.assign({}, e, { floor: Number(e.floor) }))
         .filter(e => (!q.hostel || e.hostel === q.hostel) && (!q.floor || e.floor === Number(q.floor)));
     },
+    async post(body) {
+      if (!CFG.API_URL) return { ok: false, error: "not_connected" };
+      // text/plain avoids a CORS preflight, which Apps Script can't answer
+      const r = await fetch(CFG.API_URL, { method: "POST", body: JSON.stringify(body) });
+      return r.json();
+    },
+    checkPin(pin) { return this.post({ pin, action: "checkPin" }); },
+    async upload(pin, hostel, floor, blob) {
+      const data = await blobToBase64(blob);
+      return this.post({ pin, action: "upload", hostel, floor, mimeType: blob.type || "application/octet-stream", data });
+    },
     async add(payload) {
       if (!CFG.API_URL) return { ok: false, error: "not_connected" };
       // text/plain avoids a CORS preflight, which Apps Script can't answer
@@ -360,12 +416,96 @@
     }
   };
 
+  /* ---------------- media ---------------- */
+  function blobToBase64(blob) {
+    return new Promise((res, rej) => {
+      const fr = new FileReader();
+      fr.onload = () => res(String(fr.result).split(",")[1] || "");
+      fr.onerror = rej;
+      fr.readAsDataURL(blob);
+    });
+  }
+  // Shrink photos to at most 1600px JPEG so they upload fast on mobile data.
+  async function compressImage(file) {
+    const url = URL.createObjectURL(file);
+    try {
+      const img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = url; });
+      const s = Math.min(1, 1600 / Math.max(img.naturalWidth, img.naturalHeight));
+      const c = document.createElement("canvas");
+      c.width = Math.round(img.naturalWidth * s);
+      c.height = Math.round(img.naturalHeight * s);
+      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+      const out = await new Promise(r => c.toBlob(r, "image/jpeg", 0.82));
+      return out && out.size < file.size ? out : file;
+    } catch (e) {
+      return file;
+    } finally {
+      URL.revokeObjectURL(url);
+    }
+  }
+  function driveThumb(id, w) { return "https://drive.google.com/thumbnail?id=" + encodeURIComponent(id) + "&sz=w" + (w || 400); }
+  function drivePreview(id) { return "https://drive.google.com/file/d/" + encodeURIComponent(id) + "/preview"; }
+
+  /* ---------------- staff PIN lock (home, staff and QR pages) ---------------- */
+  // The records are public anyway; this keeps students on their floor page.
+  function gate(onUnlock) {
+    const saved = store.get("sp_pin", "");
+    if (saved) {
+      onUnlock(saved);
+      API.checkPin(saved).then(r => {
+        if (r && r.error === "bad_pin") { store.del("sp_pin"); location.reload(); }
+      }).catch(() => {});
+      return;
+    }
+    document.body.classList.add("locked");
+    const g = document.createElement("div");
+    g.className = "gate";
+    document.body.appendChild(g);
+    let busy = false, err = "";
+    const draw = () => {
+      g.innerHTML = `<form class="gate-card" novalidate>
+        <span class="logo big">${ICONS.drop}</span>
+        <h1>${esc(t("staffOnly"))}</h1>
+        <p>${esc(t("staffOnlySub"))}</p>
+        <input class="pin" type="password" inputmode="numeric" autocomplete="off" maxlength="8" aria-label="${esc(t("pin"))}" placeholder="••••">
+        <p class="gate-err" role="alert">${esc(err)}</p>
+        <button class="btn primary" type="submit" ${busy ? "disabled" : ""}>${esc(t(busy ? "checking" : "unlock"))}</button>
+      </form>`;
+      const form = g.querySelector("form"), input = g.querySelector("input");
+      input.focus();
+      form.onsubmit = async ev => {
+        ev.preventDefault();
+        const pin = input.value.trim();
+        if (!pin || busy) return;
+        busy = true; err = ""; draw();
+        let r;
+        try { r = await API.checkPin(pin); } catch (e) { r = { ok: false, error: "network" }; }
+        busy = false;
+        if (r && r.ok) {
+          store.set("sp_pin", pin);
+          g.remove();
+          document.body.classList.remove("locked");
+          onUnlock(pin);
+          return;
+        }
+        err = t(r && r.error === "bad_pin" ? "badPin" : r && r.error === "locked" ? "lockedOut" : "saveError");
+        draw();
+      };
+    };
+    draw();
+    document.addEventListener("langchange", () => { if (g.isConnected) draw(); });
+  }
+  function lockPhone() { store.del("sp_pin"); location.reload(); }
+
   /* ---------------- icons ---------------- */
   const ICONS = {
     filter: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 5h12v5H18z"/><rect x="11" y="10" width="26" height="31" rx="4"/><path d="M11 18h26"/><path d="M37 30h5v5"/><path d="M42 39v1.5"/><path d="M17 41v3M31 41v3"/></svg>',
     dispenser: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 3h8v4c4.5 1.2 7 4 7 8v4H13v-4c0-4 2.5-6.8 7-8z"/><rect x="12" y="19" width="24" height="26" rx="3"/><path d="M19 27h10v6H19z"/><path d="M18 39h12"/></svg>',
     jar: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 4h8v5c5 1.6 8 5.2 8 10v19a6 6 0 0 1-6 6H18a6 6 0 0 1-6-6V19c0-4.8 3-8.4 8-10z"/><path d="M19 26a6 6 0 0 1 10-2"/><path d="M29 20v4h-4"/><path d="M29 32a6 6 0 0 1-10 2"/><path d="M19 38v-4h4"/></svg>',
     drop: '<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 3C24 3 9 20 9 30a15 15 0 0 0 30 0C39 20 24 3 24 3z" fill="currentColor"/><path d="M17 31a7 7 0 0 0 7 7" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" opacity=".75"/></svg>',
+    play: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="rgba(13,38,54,.72)"/><path d="M10 8l6 4-6 4z" fill="#fff"/></svg>',
+    camera: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8a2 2 0 0 1 2-2h2.5l1.5-2h6l1.5 2H19a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="13" r="4"/></svg>',
+    x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>',
     check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
     arrow: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>',
     boys: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 42V18L24 6l18 12v24"/><path d="M6 42h36"/><path d="M19 42V30h10v12"/><path d="M14 22h4M30 22h4"/></svg>',
@@ -373,10 +513,12 @@
   };
 
   /* ---------------- shared page bits ---------------- */
-  function mountChrome() {
+  function mountChrome(opts) {
+    const linkHome = !(opts && opts.linkHome === false);
     const brand = document.getElementById("brand");
     if (brand) {
-      brand.innerHTML = `<a href="index.html" class="brand-link"><span class="logo">${ICONS.drop}</span><span class="brand-name" data-i18n="brand"></span></a>`;
+      const inner = `<span class="logo">${ICONS.drop}</span><span class="brand-name" data-i18n="brand"></span>`;
+      brand.innerHTML = linkHome ? `<a href="index.html" class="brand-link">${inner}</a>` : `<span class="brand-link">${inner}</span>`;
     }
     applyI18n();
   }
@@ -385,6 +527,7 @@
     CFG, TYPES, ICONS, API, store,
     t, tIn, setLang, applyI18n, get lang() { return lang; },
     todayISO, addDays, daysSince, fmtDate, relDays, statusOf, parseISO,
-    esc, pad2, floorUrl, siteBase, sortEntries, latestByType, floorStatus, mountChrome
+    esc, pad2, floorUrl, siteBase, sortEntries, latestByType, floorStatus, mountChrome,
+    gate, lockPhone, compressImage, driveThumb, drivePreview
   };
 })();

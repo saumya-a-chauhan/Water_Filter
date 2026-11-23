@@ -15,7 +15,6 @@
 <header class="top"><div class="wrap"><div id="brand"></div><div id="lang" class="lang" role="group" aria-label="Language"></div></div></header>
 
 <main class="wrap">
-  <a class="back" href="index.html" id="back"></a>
   <section class="floor-hero">
     <div class="bignum" id="bignum">··</div>
     <div class="hostel-name" id="hostelName"></div>
@@ -35,14 +34,16 @@
   </section>
 </main>
 
+<dialog class="lightbox" id="lb"><button type="button" class="lb-close" id="lbClose"></button><div class="lb-body" id="lbBody"></div></dialog>
+
 <footer class="foot"><div class="wrap"><span data-i18n="footer"></span><span>Saaf Paani</span></div></footer>
 
 <script src="assets/config.js"></script>
 <script src="assets/app.js"></script>
 <script>
 (function () {
-  const { CFG, TYPES, ICONS, API, store, t, esc, pad2, fmtDate, relDays, daysSince, statusOf, sortEntries, latestByType, mountChrome } = SP;
-  mountChrome();
+  const { CFG, TYPES, ICONS, API, store, t, esc, pad2, fmtDate, relDays, daysSince, statusOf, sortEntries, latestByType, mountChrome, driveThumb, drivePreview } = SP;
+  mountChrome({ linkHome: false });
 
   const q = new URLSearchParams(location.search);
   const hostel = CFG.HOSTELS.includes(q.get("h")) ? q.get("h") : null;
@@ -54,8 +55,10 @@
   let failed = false, filter = "all";
 
   function renderHead() {
-    document.getElementById("back").innerHTML = ICONS.arrow + "<span>" + esc(t("backHome")) + "</span>";
-    if (!valid) { location.replace("index.html"); return; }
+    if (!valid) {
+      document.getElementById("floorTitle").textContent = t("noHistory");
+      return;
+    }
     document.getElementById("bignum").textContent = pad2(floor);
     document.getElementById("hostelName").textContent = t(hostel);
     document.getElementById("floorTitle").textContent = t("floorN", { n: floor });
@@ -121,11 +124,35 @@
       const who = [e.name ? t("by") + ": " + e.name : "", e.witness ? t("witness") + ": " + e.witness : ""].filter(Boolean).join(" · ");
       html += `<div class="ev ${e.type}">
         <div class="ic">${ICONS[e.type]}</div>
-        <div><div class="what">${esc(t("act_" + e.type))}</div>${who ? `<div class="who">${esc(who)}</div>` : ""}</div>
+        <div><div class="what">${esc(t("act_" + e.type))}</div>${who ? `<div class="who">${esc(who)}</div>` : ""}${mediaHtml(e.media)}</div>
         <div class="when">${esc(fmtDate(e.date, { weekday: "short", day: "numeric", month: "short" }))}</div>
       </div>`;
     });
     el.innerHTML = html;
+    el.querySelectorAll(".thumb").forEach(b => b.onclick = () => openMedia(b.dataset.id, b.dataset.type));
+    el.querySelectorAll(".thumb img").forEach(img => img.onerror = () => { img.replaceWith(Object.assign(document.createElement("span"), { className: "thumb-fallback", innerHTML: ICONS.camera })); });
+  }
+
+  function mediaHtml(list) {
+    if (!Array.isArray(list) || !list.length) return "";
+    return `<div class="media" aria-label="${esc(t("photos"))}">` + list.map(m =>
+      `<button type="button" class="thumb" data-id="${esc(m.id)}" data-type="${esc(m.type)}" aria-label="${esc(t("photos"))}">
+        <img src="${driveThumb(m.id, 300)}" alt="" loading="lazy" referrerpolicy="no-referrer">
+        ${m.type === "video" ? `<span class="play">${ICONS.play}</span>` : ""}
+      </button>`).join("") + "</div>";
+  }
+
+  const lb = document.getElementById("lb");
+  document.getElementById("lbClose").innerHTML = ICONS.x;
+  document.getElementById("lbClose").onclick = () => lb.close();
+  lb.addEventListener("click", ev => { if (ev.target === lb) lb.close(); });
+  lb.addEventListener("close", () => { document.getElementById("lbBody").innerHTML = ""; });
+  function openMedia(id, type) {
+    document.getElementById("lbBody").innerHTML = type === "video"
+      ? `<iframe src="${drivePreview(id)}" allow="autoplay; fullscreen" allowfullscreen></iframe>`
+      : `<img src="${driveThumb(id, 1600)}" alt="" referrerpolicy="no-referrer">`;
+    document.getElementById("lbClose").setAttribute("aria-label", t("close"));
+    lb.showModal();
   }
 
   function renderAll() { renderHead(); renderStatus(); renderFilters(); renderTimeline(); }

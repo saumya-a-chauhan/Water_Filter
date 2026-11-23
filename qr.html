@@ -26,15 +26,16 @@
   <div class="qr-grid" id="grid"></div>
 </main>
 
-<footer class="foot"><div class="wrap"><span data-i18n="footer"></span><span>Saaf Paani</span></div></footer>
+<footer class="foot"><div class="wrap"><span data-i18n="footer"></span><button type="button" class="linkbtn" id="lock" data-i18n="lockPhone"></button></div></footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script src="assets/config.js"></script>
 <script src="assets/app.js"></script>
 <script>
 (function () {
-  const { CFG, ICONS, t, tIn, esc, pad2, floorUrl, siteBase, mountChrome } = SP;
+  const { CFG, ICONS, t, tIn, esc, pad2, floorUrl, siteBase, mountChrome, gate, lockPhone } = SP;
   mountChrome();
+  document.getElementById("lock").onclick = lockPhone;
   let show = "all";
 
   // Draw the QR as crisp SVG squares so it prints sharp at any size.
@@ -86,7 +87,7 @@
     document.getElementById("grid").innerHTML = cards.join("");
   }
   document.addEventListener("langchange", render);
-  render();
+  gate(render);
 })();
 </script>
 </body>

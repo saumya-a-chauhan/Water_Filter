@@ -7,9 +7,11 @@ Cleaning records for the steel water filter and water dispenser in every hostel 
 | Page | Who it's for |
 |---|---|
 | `index.html` | Overview of all floors in both hostels, colour-coded |
-| `floor.html?h=boys&f=3` | What a student sees after scanning a floor's QR code: last cleaning dates and full history |
-| `staff.html` | Didi's entry page: hostel → floor → what was done → when → Save |
+| `floor.html?h=boys&f=3` | What a student sees after scanning a floor's QR code: last cleaning dates, full history, and photos/videos. It has no links to the other pages. |
+| `staff.html` | Didi's entry page: hostel → floor → what was done → when → photos/videos → Save |
 | `qr.html` | Printable QR posters for all 20 pantries, plus one staff QR |
+
+The home, staff and QR pages ask for the staff PIN once per phone ("Lock this phone" in the footer forgets it). Photos and videos are saved to a Google Drive folder called **Saaf Paani Media**, viewable by anyone with the link.
 
 The site works in English, Hindi and Punjabi. The staff page opens in Hindi by default; everyone can switch language from the top bar.
 
@@ -23,7 +25,8 @@ This is already set up for the Plaksha deployment. The steps below are for re-cr
 2. In the sheet: **Extensions → Apps Script**.
 3. Delete the code there, paste the contents of [`apps-script/Code.gs`](apps-script/Code.gs), and click **Save**.
 4. In the function dropdown at the top choose **`setup`** and click **Run**. Approve the permissions it asks for.
-   This creates the `Logs` sheet and sets the staff PIN to **2580**.
+   This creates the `Logs` sheet, the `Saaf Paani Media` Drive folder, and sets the staff PIN to **2580**.
+   In **Project Settings**, make sure **Enable Chrome V8 runtime** is ticked.
 5. To use a different PIN: edit `NEW_PIN` inside `changePin`, choose **`changePin`**, and click **Run**.
 6. Click **Deploy → New deployment** → gear icon → **Web app**:
    - Execute as: **Me**

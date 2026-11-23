@@ -47,14 +47,15 @@
   </section>
 </main>
 
-<footer class="foot"><div class="wrap"><span data-i18n="footer"></span><span>Saaf Paani</span></div></footer>
+<footer class="foot"><div class="wrap"><span data-i18n="footer"></span><button type="button" class="linkbtn" id="lock" data-i18n="lockPhone"></button></div></footer>
 
 <script src="assets/config.js"></script>
 <script src="assets/app.js"></script>
 <script>
 (function () {
-  const { CFG, TYPES, ICONS, API, t, pad2, floorStatus, mountChrome, esc } = SP;
+  const { CFG, TYPES, ICONS, API, t, pad2, floorStatus, mountChrome, esc, gate, lockPhone } = SP;
   mountChrome();
+  document.getElementById("lock").onclick = lockPhone;
   const box = document.getElementById("overview");
   let entries = null, failed = false;
 
@@ -89,7 +90,7 @@
     render();
   }
   document.addEventListener("langchange", render);
-  load();
+  gate(load);
 })();
 </script>
 </body>
