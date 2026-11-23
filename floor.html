@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Saaf Paani · Floor record</title>
+<meta name="theme-color" content="#f3eee4">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Sans+Gurmukhi:wght@400;500;600;700&family=Tiro+Devanagari+Hindi:ital@0;1&family=Tiro+Gurmukhi:ital@0;1&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="top"><div class="wrap"><div id="brand"></div><div id="lang" class="lang" role="group" aria-label="Language"></div></div></header>
+<div id="demo-banner" class="demo" hidden><p data-i18n="demo"></p></div>
+
+<main class="wrap">
+  <a class="back" href="index.html" id="back"></a>
+  <section class="floor-hero">
+    <div class="bignum" id="bignum">··</div>
+    <div class="hostel-name" id="hostelName"></div>
+    <h1 id="floorTitle"></h1>
+  </section>
+
+  <div id="verdict"></div>
+  <div class="items" id="items"></div>
+  <p class="hint" data-i18n="reportHint"></p>
+
+  <section class="sec">
+    <div class="sec-head">
+      <h2 data-i18n="history"></h2>
+      <div class="filters" id="filters"></div>
+    </div>
+    <div class="timeline" id="timeline"></div>
+  </section>
+</main>
+
+<footer class="foot"><div class="wrap"><span data-i18n="footer"></span><span>Saaf Paani</span></div></footer>
+
+<script src="assets/config.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  const { CFG, TYPES, ICONS, API, store, t, esc, pad2, fmtDate, relDays, daysSince, statusOf, sortEntries, latestByType, mountChrome } = SP;
+  mountChrome();
+
+  const q = new URLSearchParams(location.search);
+  const hostel = CFG.HOSTELS.includes(q.get("h")) ? q.get("h") : null;
+  const floor = Number(q.get("f"));
+  const valid = hostel && floor >= 1 && floor <= CFG.FLOORS;
+  const cacheKey = "sp_cache_" + hostel + "_" + floor;
+
+  let entries = valid ? store.get(cacheKey, null) : [];
+  let failed = false, filter = "all";
+
+  function renderHead() {
+    document.getElementById("back").innerHTML = ICONS.arrow + "<span>" + esc(t("backHome")) + "</span>";
+    if (!valid) { location.replace("index.html"); return; }
+    document.getElementById("bignum").textContent = pad2(floor);
+    document.getElementById("hostelName").textContent = t(hostel);
+    document.getElementById("floorTitle").textContent = t("floorN", { n: floor });
+    document.title = t("brand") + " · " + t(hostel) + " · " + t("floorN", { n: floor });
+  }
+
+  function renderStatus() {
+    const items = document.getElementById("items");
+    const verdict = document.getElementById("verdict");
+    if (!entries) {
+      items.innerHTML = TYPES.map(() => '<div class="item ftile skeleton" style="min-height:190px"></div>').join("");
+      verdict.innerHTML = "";
+      return;
+    }
+    const latest = latestByType(entries);
+    const sts = [];
+    items.innerHTML = TYPES.map(ty => {
+      const e = latest[ty];
+      const d = e ? daysSince(e.date) : null;
+      const st = statusOf(ty, d);
+      sts.push(st);
+      return `<article class="item ${st}">
+        <div class="ic">${ICONS[ty]}</div>
+        <div class="body">
+          <div class="nm">${esc(t(ty))}</div>
+          <div class="k">${esc(t(ty === "jar" ? "lastReplaced" : "lastCleaned"))}</div>
+          <div class="rel">${e ? esc(relDays(d)) : esc(t("noRecord"))}</div>
+          ${e ? `<div class="dt">${esc(fmtDate(e.date, { weekday: "short", day: "numeric", month: "long", year: "numeric" }))}</div>` : ""}
+        </div>
+        <span class="chip ${st}"><i class="dot ${st}"></i>${esc(t(st))}</span>
+      </article>`;
+    }).join("");
+    const worst = sts.some(s => s === "bad" || s === "none") ? "bad" : sts.includes("warn") ? "warn" : "good";
+    const msg = { good: "allGood", warn: "dueSoon", bad: "needsAttention" }[worst];
+    verdict.innerHTML = `<div class="verdict ${worst}"><span class="pulse"></span><span>${esc(t(msg))}</span></div>`;
+  }
+
+  function renderFilters() {
+    const el = document.getElementById("filters");
+    el.innerHTML = ["all"].concat(TYPES).map(k =>
+      `<button type="button" data-k="${k}" class="${filter === k ? "on" : ""}">${esc(t(k))}</button>`).join("");
+    el.querySelectorAll("button").forEach(b => b.onclick = () => { filter = b.dataset.k; renderFilters(); renderTimeline(); });
+  }
+
+  function renderTimeline() {
+    const el = document.getElementById("timeline");
+    if (failed && !entries) {
+      el.innerHTML = `<div class="err" style="margin:12px 0"><span>${esc(t("loadError"))}</span><button class="btn ghost" id="retry">${esc(t("retry"))}</button></div>`;
+      document.getElementById("retry").onclick = load;
+      return;
+    }
+    if (!entries) { el.innerHTML = `<p class="empty">${esc(t("loading"))}</p>`; return; }
+    const list = sortEntries(entries).filter(e => filter === "all" || e.type === filter);
+    if (!list.length) { el.innerHTML = `<p class="empty">${esc(t("noHistory"))}</p>`; return; }
+    let html = "", month = "";
+    list.forEach(e => {
+      const m = e.date.slice(0, 7);
+      if (m !== month) {
+        month = m;
+        html += `<div class="month">${esc(fmtDate(e.date, { month: "long", year: "numeric" }))}</div>`;
+      }
+      const who = [e.name ? t("by") + ": " + e.name : "", e.witness ? t("witness") + ": " + e.witness : ""].filter(Boolean).join(" · ");
+      html += `<div class="ev ${e.type}">
+        <div class="ic">${ICONS[e.type]}</div>
+        <div><div class="what">${esc(t("act_" + e.type))}</div>${who ? `<div class="who">${esc(who)}</div>` : ""}</div>
+        <div class="when">${esc(fmtDate(e.date, { weekday: "short", day: "numeric", month: "short" }))}</div>
+      </div>`;
+    });
+    el.innerHTML = html;
+  }
+
+  function renderAll() { renderHead(); renderStatus(); renderFilters(); renderTimeline(); }
+
+  async function load() {
+    failed = false;
+    renderAll();
+    try {
+      entries = await API.list({ hostel, floor });
+      store.set(cacheKey, entries);
+    } catch (e) { failed = true; }
+    renderAll();
+  }
+
+  document.addEventListener("langchange", renderAll);
+  if (valid) load(); else renderHead();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Saaf Paani · Pantry water records</title>
+<meta name="description" content="Cleaning records for every hostel pantry's steel filter and water dispenser.">
+<meta name="theme-color" content="#f3eee4">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Sans+Gurmukhi:wght@400;500;600;700&family=Tiro+Devanagari+Hindi:ital@0;1&family=Tiro+Gurmukhi:ital@0;1&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="top"><div class="wrap"><div id="brand"></div><div id="lang" class="lang" role="group" aria-label="Language"></div></div></header>
+<div id="demo-banner" class="demo" hidden><p data-i18n="demo"></p></div>
+
+<main>
+  <section class="hero wrap">
+    <span class="eyebrow">Plaksha · FEW Nexus</span>
+    <h1><span data-i18n="tagline1"></span><em data-i18n="tagline2"></em></h1>
+    <p class="sub" data-i18n="heroSub"></p>
+    <div class="cta">
+      <a class="btn primary" href="staff.html"><span data-i18n="staffEntry"></span></a>
+      <a class="btn ghost" href="qr.html"><span data-i18n="printQR"></span></a>
+    </div>
+    <svg class="wave" viewBox="0 0 1200 70" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0 35 C 150 5, 300 65, 450 35 S 750 5, 900 35 S 1100 65, 1200 35" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M0 50 C 150 20, 300 80, 450 50 S 750 20, 900 50 S 1100 80, 1200 50" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".5"/>
+    </svg>
+  </section>
+
+  <section class="sec wrap">
+    <div class="sec-head">
+      <div>
+        <h2 data-i18n="overview"></h2>
+        <p class="lead" data-i18n="overviewSub"></p>
+      </div>
+      <div class="legend">
+        <span><i class="dot good"></i><span data-i18n="legend_good"></span></span>
+        <span><i class="dot warn"></i><span data-i18n="legend_warn"></span></span>
+        <span><i class="dot bad"></i><span data-i18n="legend_bad"></span></span>
+      </div>
+    </div>
+    <div id="overview"></div>
+  </section>
+</main>
+
+<footer class="foot"><div class="wrap"><span data-i18n="footer"></span><span>Saaf Paani</span></div></footer>
+
+<script src="assets/config.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  const { CFG, TYPES, ICONS, API, t, pad2, floorStatus, mountChrome, esc } = SP;
+  mountChrome();
+  const box = document.getElementById("overview");
+  let entries = null, failed = false;
+
+  function skeleton() {
+    box.innerHTML = CFG.HOSTELS.map(() =>
+      `<div class="hostel"><div class="floors">${Array.from({ length: CFG.FLOORS }, () => '<div class="ftile skeleton"></div>').join("")}</div></div>`
+    ).join("");
+  }
+  function render() {
+    if (failed) {
+      box.innerHTML = `<div class="err"><span>${esc(t("loadError"))}</span><button class="btn ghost" id="retry">${esc(t("retry"))}</button></div>`;
+      document.getElementById("retry").onclick = load;
+      return;
+    }
+    if (!entries) return skeleton();
+    box.innerHTML = CFG.HOSTELS.map(h => {
+      const tiles = [];
+      for (let f = 1; f <= CFG.FLOORS; f++) {
+        const { st } = floorStatus(entries.filter(e => e.hostel === h && e.floor === f));
+        tiles.push(`<a class="ftile" href="floor.html?h=${h}&f=${f}">
+          <div class="lbl">${esc(t("floor"))}</div>
+          <div class="num">${pad2(f)}</div>
+          <div class="dots">${TYPES.map(ty => `<span class="chip-mini ${st[ty]}" title="${esc(t(ty))}: ${esc(t(st[ty]))}">${ICONS[ty]}</span>`).join("")}</div>
+        </a>`);
+      }
+      return `<div class="hostel"><h3>${ICONS[h]}<span>${esc(t(h))}</span></h3><div class="floors">${tiles.join("")}</div></div>`;
+    }).join("");
+  }
+  async function load() {
+    failed = false; entries = null; render();
+    try { entries = await API.list(); } catch (e) { failed = true; }
+    render();
+  }
+  document.addEventListener("langchange", render);
+  load();
+})();
+</script>
+</body>
+</html>

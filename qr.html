@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Saaf Paani · QR codes</title>
+<meta name="theme-color" content="#f3eee4">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Sans+Gurmukhi:wght@400;500;600;700&family=Tiro+Devanagari+Hindi:ital@0;1&family=Tiro+Gurmukhi:ital@0;1&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="top"><div class="wrap"><div id="brand"></div><div id="lang" class="lang" role="group" aria-label="Language"></div></div></header>
+
+<main class="wrap">
+  <section class="sec no-print">
+    <h2 data-i18n="qrTitle"></h2>
+    <p class="lead" data-i18n="qrSub"></p>
+  </section>
+  <div class="qr-tools no-print">
+    <div class="filters" id="hfilter"></div>
+    <button class="btn primary" type="button" onclick="window.print()"><span data-i18n="print"></span></button>
+  </div>
+  <div class="qr-grid" id="grid"></div>
+</main>
+
+<footer class="foot"><div class="wrap"><span data-i18n="footer"></span><span>Saaf Paani</span></div></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script src="assets/config.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  const { CFG, ICONS, t, tIn, esc, pad2, floorUrl, siteBase, mountChrome } = SP;
+  mountChrome();
+  let show = "all";
+
+  // Draw the QR as crisp SVG squares so it prints sharp at any size.
+  function qrSvg(text, color) {
+    const qr = qrcode(0, "M");
+    qr.addData(text);
+    qr.make();
+    const n = qr.getModuleCount();
+    let d = "";
+    for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (qr.isDark(r, c)) d += `M${c} ${r}h1v1h-1z`;
+    return `<svg viewBox="-2 -2 ${n + 4} ${n + 4}" shape-rendering="crispEdges" role="img" aria-label="QR code"><rect x="-2" y="-2" width="${n + 4}" height="${n + 4}" fill="#fff"/><path d="${d}" fill="${color || "#0d2636"}"/></svg>`;
+  }
+  const three = key => ["en", "hi", "pa"].map(l => `<span lang="${l}">${esc(tIn(l, key))}</span>`).join("");
+
+  function card(h, f) {
+    const url = floorUrl(h, f);
+    return `<article class="qcard">
+      <div class="qtop"><span class="logo">${ICONS.drop}</span>Saaf Paani</div>
+      <div class="qhostel">${three(h)}</div>
+      <div class="qfloor">${pad2(f)}</div>
+      <div class="qfloorlbl">Floor ${f} · मंज़िल ${f} · ਮੰਜ਼ਿਲ ${f}</div>
+      <div class="qr">${qrSvg(url)}</div>
+      <div class="scan">${three("scanLine")}</div>
+      <div class="url">${esc(url)}</div>
+    </article>`;
+  }
+  function staffCard() {
+    const url = siteBase() + "staff.html";
+    return `<article class="qcard staffcard">
+      <div class="qtop"><span class="logo">${ICONS.drop}</span>Saaf Paani</div>
+      <div class="qfloor" style="margin-top:14px">Staff</div>
+      <div class="qhostel">${three("staffEntry")}</div>
+      <div class="qr">${qrSvg(url)}</div>
+      <div class="scan">${three("staffCardLine")}</div>
+      <div class="url">${esc(url)}</div>
+    </article>`;
+  }
+
+  function render() {
+    const opts = [["all", t("showAll")]].concat(CFG.HOSTELS.map(h => [h, t(h)]));
+    const hf = document.getElementById("hfilter");
+    hf.innerHTML = opts.map(([v, l]) => `<button type="button" data-v="${v}" class="${show === v ? "on" : ""}">${esc(l)}</button>`).join("");
+    hf.querySelectorAll("button").forEach(b => b.onclick = () => { show = b.dataset.v; render(); });
+
+    const cards = [staffCard()];
+    CFG.HOSTELS.filter(h => show === "all" || show === h).forEach(h => {
+      for (let f = 1; f <= CFG.FLOORS; f++) cards.push(card(h, f));
+    });
+    document.getElementById("grid").innerHTML = cards.join("");
+  }
+  document.addEventListener("langchange", render);
+  render();
+})();
+</script>
+</body>
+</html>

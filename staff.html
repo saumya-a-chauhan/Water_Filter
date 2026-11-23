@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="hi" data-default-lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Saaf Paani · Staff entry</title>
+<meta name="theme-color" content="#f3eee4">
+<meta name="robots" content="noindex">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Sans+Gurmukhi:wght@400;500;600;700&family=Tiro+Devanagari+Hindi:ital@0;1&family=Tiro+Gurmukhi:ital@0;1&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="top"><div class="wrap"><div id="brand"></div><div id="lang" class="lang" role="group" aria-label="Language"></div></div></header>
+<div id="demo-banner" class="demo" hidden><p data-i18n="demo"></p></div>
+
+<main class="wrap" style="max-width:640px">
+  <form id="form" novalidate>
+    <h1 class="staff-title" data-i18n="staffEntry"></h1>
+
+    <section class="step" id="s-hostel">
+      <h2><span class="n">1</span><span data-i18n="step1"></span></h2>
+      <div class="choices two" id="hostels"></div>
+    </section>
+
+    <section class="step" id="s-floor">
+      <h2><span class="n">2</span><span data-i18n="step2"></span></h2>
+      <div class="choices floorsel" id="floors"></div>
+    </section>
+
+    <section class="step" id="s-type">
+      <h2><span class="n">3</span><span data-i18n="step3"></span></h2>
+      <p class="sub" data-i18n="step3hint"></p>
+      <div class="choices three" id="types"></div>
+    </section>
+
+    <section class="step" id="s-date">
+      <h2><span class="n">4</span><span data-i18n="step4"></span></h2>
+      <div class="choices three" id="dates"></div>
+      <div class="field" id="otherDateWrap" hidden style="margin-top:12px">
+        <input type="date" id="otherDate" aria-label="date">
+      </div>
+    </section>
+
+    <section class="step">
+      <h2><span class="n">5</span><span data-i18n="step5"></span></h2>
+      <div class="field"><label for="name" data-i18n="yourName"></label><input id="name" autocomplete="name" maxlength="40"></div>
+      <div class="field" style="margin:0"><label for="witness" data-i18n="studentName"></label><input id="witness" maxlength="40"></div>
+    </section>
+
+    <section class="step" id="s-pin">
+      <h2><span class="n">6</span><span data-i18n="pin"></span></h2>
+      <div id="pinWrap">
+        <div class="field"><input id="pin" class="pin" type="password" inputmode="numeric" autocomplete="off" maxlength="8"></div>
+        <p class="sub" style="margin:0" data-i18n="pinHint"></p>
+      </div>
+      <div id="pinSaved" hidden>✓ <button type="button" class="linkbtn" id="changePin" data-i18n="changePin"></button></div>
+    </section>
+
+    <div class="savebar">
+      <p class="msg" id="msg" role="alert"></p>
+      <button class="btn primary" id="save" type="submit"><span data-i18n="save"></span></button>
+    </div>
+  </form>
+
+  <section id="done" class="done" hidden>
+    <div class="big"></div>
+    <h2 data-i18n="saved"></h2>
+    <p id="doneText"></p>
+    <div class="cta">
+      <button class="btn primary" id="again" type="button"><span data-i18n="addAnother"></span></button>
+      <a class="btn ghost" id="viewFloor" href="#"><span data-i18n="viewFloor"></span></a>
+    </div>
+  </section>
+</main>
+
+<script src="assets/config.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  const { CFG, TYPES, ICONS, API, store, t, esc, todayISO, addDays, fmtDate, mountChrome } = SP;
+  mountChrome();
+
+  const state = {
+    hostel: store.get("sp_staff_hostel", null),
+    floor: null,
+    types: new Set(),
+    when: "today",
+    other: todayISO()
+  };
+  const $ = id => document.getElementById(id);
+  $("name").value = store.get("sp_staff_name", "");
+  $("otherDate").max = todayISO();
+  $("otherDate").value = state.other;
+  document.querySelector("#done .big").innerHTML = ICONS.check;
+
+  const tick = `<span class="tick">${ICONS.check}</span>`;
+
+  function render() {
+    $("hostels").innerHTML = CFG.HOSTELS.map(h =>
+      `<button type="button" class="choice ${state.hostel === h ? "on" : ""}" data-v="${h}" aria-pressed="${state.hostel === h}">${tick}${ICONS[h]}<span>${esc(t(h))}</span></button>`).join("");
+    $("floors").innerHTML = Array.from({ length: CFG.FLOORS }, (_, i) => i + 1).map(f =>
+      `<button type="button" class="choice ${state.floor === f ? "on" : ""}" data-v="${f}" aria-pressed="${state.floor === f}" aria-label="${esc(t("floorN", { n: f }))}">${f}</button>`).join("");
+    $("types").innerHTML = TYPES.map(ty =>
+      `<button type="button" class="choice ${state.types.has(ty) ? "on" : ""}" data-v="${ty}" aria-pressed="${state.types.has(ty)}">${tick}${ICONS[ty]}<span>${esc(t("act_" + ty))}</span></button>`).join("");
+    $("dates").innerHTML = [["today", t("today")], ["yesterday", t("yesterday")], ["other", t("other")]].map(([v, l]) =>
+      `<button type="button" class="choice ${state.when === v ? "on" : ""}" data-v="${v}" aria-pressed="${state.when === v}">${esc(l)}</button>`).join("");
+    $("otherDateWrap").hidden = state.when !== "other";
+
+    const hasPin = !!store.get("sp_pin", "");
+    $("pinWrap").hidden = hasPin;
+    $("pinSaved").hidden = !hasPin;
+
+    $("hostels").querySelectorAll(".choice").forEach(b => b.onclick = () => { state.hostel = b.dataset.v; clearMissing("s-hostel"); render(); });
+    $("floors").querySelectorAll(".choice").forEach(b => b.onclick = () => { state.floor = Number(b.dataset.v); clearMissing("s-floor"); render(); });
+    $("types").querySelectorAll(".choice").forEach(b => b.onclick = () => {
+      const v = b.dataset.v; state.types.has(v) ? state.types.delete(v) : state.types.add(v); clearMissing("s-type"); render();
+    });
+    $("dates").querySelectorAll(".choice").forEach(b => b.onclick = () => { state.when = b.dataset.v; render(); });
+  }
+
+  function clearMissing(id) { $(id).classList.remove("missing"); $("msg").textContent = ""; }
+  function dateValue() {
+    if (state.when === "today") return todayISO();
+    if (state.when === "yesterday") return addDays(todayISO(), -1);
+    return $("otherDate").value || todayISO();
+  }
+
+  $("changePin").onclick = () => { store.del("sp_pin"); render(); $("pin").focus(); };
+
+  $("form").onsubmit = async ev => {
+    ev.preventDefault();
+    const pin = store.get("sp_pin", "") || $("pin").value.trim();
+    const checks = [
+      [!state.hostel, "s-hostel", "missingHostel"],
+      [!state.floor, "s-floor", "missingFloor"],
+      [!state.types.size, "s-type", "missingType"],
+      [!pin, "s-pin", "missingPin"]
+    ];
+    const miss = checks.find(c => c[0]);
+    if (miss) {
+      $(miss[1]).classList.add("missing");
+      $(miss[1]).scrollIntoView({ behavior: "smooth", block: "center" });
+      $("msg").textContent = t(miss[2]);
+      return;
+    }
+    const payload = {
+      pin, hostel: state.hostel, floor: state.floor, types: [...state.types], date: dateValue(),
+      name: $("name").value.trim(), witness: $("witness").value.trim()
+    };
+    const btn = $("save");
+    btn.disabled = true; btn.querySelector("span").textContent = t("saving"); $("msg").textContent = "";
+    let res;
+    try { res = await API.add(payload); } catch (e) { res = { ok: false, error: "network" }; }
+    btn.disabled = false; btn.querySelector("span").textContent = t("save");
+
+    if (!res || !res.ok) {
+      if (res && res.error === "bad_pin") {
+        store.del("sp_pin"); render();
+        $("s-pin").classList.add("missing"); $("pin").value = ""; $("msg").textContent = t("badPin");
+      } else {
+        $("msg").textContent = t("saveError");
+      }
+      return;
+    }
+    store.set("sp_pin", pin);
+    store.set("sp_staff_hostel", state.hostel);
+    store.set("sp_staff_name", payload.name);
+    $("doneText").textContent = payload.types.map(ty => t("act_" + ty)).join(" · ") + " — " +
+      t(state.hostel) + ", " + t("floorN", { n: state.floor }) + ", " + fmtDate(payload.date);
+    $("viewFloor").href = "floor.html?h=" + state.hostel + "&f=" + state.floor;
+    $("form").hidden = true; $("done").hidden = false;
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  $("again").onclick = () => {
+    state.floor = null; state.types.clear(); state.when = "today";
+    $("witness").value = "";
+    $("done").hidden = true; $("form").hidden = false;
+    render(); window.scrollTo({ top: 0 });
+  };
+
+  document.addEventListener("langchange", render);
+  render();
+})();
+</script>
+</body>
+</html>
