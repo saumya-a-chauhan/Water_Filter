@@ -1,6 +1,6 @@
-# Saaf Paani · साफ़ पानी · ਸਾਫ਼ ਪਾਣੀ
+# Pantry Watch · पैंट्री वॉच · ਪੈਂਟਰੀ ਵਾਚ
 
-Cleaning records for the steel water filter and water dispenser in every hostel floor pantry at Plaksha University. A FEW Nexus course project.
+Cleaning records for the steel water filter, the water dispenser and the shared fridge in every hostel floor pantry at Plaksha University. A FEW Nexus course project.
 
 **Live site:** https://saumya-a-chauhan.github.io/Water_Filter/
 
@@ -44,7 +44,7 @@ Open `qr.html` on a laptop, pick a hostel or both, and click **Print**. Each A4 
 ## Settings
 
 All in [`assets/config.js`](assets/config.js):
-- `THRESHOLDS`: after how many days an item turns amber and red. Defaults: filter and dispenser cleaning 7 / 14 days, plastic jar replacement 180 / 365 days. Agree on these with facilities.
+- `THRESHOLDS`: after how many days an item turns amber and red. Defaults: filter, dispenser and fridge cleaning 7 / 14 days, plastic jar replacement 180 / 365 days. Agree on these with facilities.
 - `FLOORS`, `HOSTELS`: number of floors and hostels.
 
 ## Fixing a mistake

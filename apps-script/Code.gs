@@ -1,5 +1,5 @@
 /**
- * Saaf Paani — backend (Google Apps Script + Google Sheet + Google Drive)
+ * Pantry Watch — backend (Google Apps Script + Google Sheet + Google Drive)
  *
  * Every cleaning entry is one row in the "Logs" sheet. Photos and videos go
  * into a Drive folder called "Saaf Paani Media", viewable by anyone with the link.
@@ -15,7 +15,7 @@
 const SHEET_NAME = 'Logs';
 const HEADERS = ['id', 'loggedAt', 'hostel', 'floor', 'type', 'date', 'name', 'witness', 'media'];
 const HOSTELS = ['boys', 'girls'];
-const TYPES = ['filter', 'dispenser', 'jar'];
+const TYPES = ['filter', 'dispenser', 'jar', 'fridge'];
 const FLOORS = 10;
 const MAX_UPLOAD_BYTES = 25 * 1024 * 1024;
 const MAX_MEDIA = 6;

@@ -1,5 +1,5 @@
 /* ------------------------------------------------------------------
-   Saaf Paani — settings
+   Pantry Watch — settings
    After deploying the Google Apps Script (see README), paste its
    Web app URL into API_URL.
 ------------------------------------------------------------------- */
@@ -16,6 +16,7 @@ window.SAAF_CONFIG = {
   THRESHOLDS: {
     filter: [7, 14],      // steel filter cleaning
     dispenser: [7, 14],   // dispenser cleaning
-    jar: [180, 365]       // plastic jar replacement
+    jar: [180, 365],      // plastic jar replacement
+    fridge: [7, 14]       // fridge clear-out of expired food
   }
 };

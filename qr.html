@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Saaf Paani · QR codes</title>
+<title>Pantry Watch · QR codes</title>
 <meta name="theme-color" content="#f3eee4">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -53,7 +53,7 @@
   function card(h, f) {
     const url = floorUrl(h, f);
     return `<article class="qcard">
-      <div class="qtop"><span class="logo">${ICONS.drop}</span>Saaf Paani</div>
+      <div class="qtop"><span class="logo">${ICONS.drop}</span>Pantry Watch</div>
       <div class="qhostel">${three(h)}</div>
       <div class="qfloor">${pad2(f)}</div>
       <div class="qfloorlbl">Floor ${f} · मंज़िल ${f} · ਮੰਜ਼ਿਲ ${f}</div>
@@ -65,7 +65,7 @@
   function staffCard() {
     const url = siteBase() + "staff.html";
     return `<article class="qcard staffcard">
-      <div class="qtop"><span class="logo">${ICONS.drop}</span>Saaf Paani</div>
+      <div class="qtop"><span class="logo">${ICONS.drop}</span>Pantry Watch</div>
       <div class="qfloor" style="margin-top:14px">Staff</div>
       <div class="qhostel">${three("staffEntry")}</div>
       <div class="qr">${qrSvg(url)}</div>

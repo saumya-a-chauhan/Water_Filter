@@ -47,6 +47,7 @@ main, header.top, footer.foot, .demo { position: relative; z-index: 1; }
 a { color: inherit; }
 button { font: inherit; color: inherit; cursor: pointer; }
 .wrap { width: 100%; max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+[hidden] { display: none !important; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 
 /* ---------- top bar ---------- */
@@ -157,7 +158,7 @@ header.top .wrap { display: flex; align-items: center; justify-content: space-be
 .verdict.none { background: var(--none-bg); color: var(--ink-2); }
 .verdict.none .pulse { animation: none; }
 
-.items { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.items { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
 .item {
   background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow);
   display: flex; flex-direction: column; gap: 10px; position: relative; overflow: hidden;
@@ -189,6 +190,7 @@ header.top .wrap { display: flex; align-items: center; justify-content: space-be
 .ev.filter .ic { background: #e3eef7; color: #2b5d85; }
 .ev.dispenser .ic { background: var(--aqua-soft); color: var(--deep); }
 .ev.jar .ic { background: #f6ead2; color: #8a5a12; }
+.ev.fridge .ic { background: #e6f0e1; color: #3f6b35; }
 .ev .what { font-weight: 600; }
 .ev .who { font-size: .85rem; color: var(--ink-3); }
 .ev .when { text-align: right; font-size: .9rem; color: var(--ink-2); white-space: nowrap; }
@@ -205,6 +207,7 @@ header.top .wrap { display: flex; align-items: center; justify-content: space-be
 .choices { display: grid; gap: 10px; }
 .choices.two { grid-template-columns: 1fr 1fr; }
 .choices.three { grid-template-columns: repeat(3, 1fr); }
+.choices.four { grid-template-columns: 1fr 1fr; }
 .choices.floorsel { grid-template-columns: repeat(5, 1fr); }
 .choice {
   position: relative; border: 2px solid var(--line); background: #fff; border-radius: 18px; padding: 14px 10px;
@@ -219,7 +222,7 @@ header.top .wrap { display: flex; align-items: center; justify-content: space-be
 .choice .tick svg { width: 14px; height: 14px; color: #fff; }
 .choice.on .tick { display: grid; }
 .floorsel .choice { font-family: "Fraunces", serif; font-size: 1.6rem; font-style: italic; font-weight: 500; padding: 10px 0; }
-.choices.three .choice { font-size: .95rem; padding: 16px 8px; }
+.choices.three .choice, .choices.four .choice { font-size: .95rem; padding: 16px 8px; }
 .field { display: grid; gap: 6px; margin-bottom: 12px; }
 .field label { font-weight: 600; font-size: .92rem; color: var(--ink-2); }
 .field input {
@@ -331,9 +334,9 @@ footer.foot .wrap { display: flex; justify-content: space-between; gap: 12px; fl
   .floor-hero { grid-template-columns: auto 1fr; }
 }
 @media (max-width: 420px) {
-  .choices.three { grid-template-columns: 1fr; }
-  .choices.three .choice { flex-direction: row; justify-content: flex-start; text-align: left; padding: 12px 14px; }
-  .choices.three .choice svg { width: 36px; height: 36px; }
+  .choices.three, .choices.four { grid-template-columns: 1fr; }
+  .choices.three .choice, .choices.four .choice { flex-direction: row; justify-content: flex-start; text-align: left; padding: 12px 14px; }
+  .choices.three .choice svg, .choices.four .choice svg { width: 36px; height: 36px; }
   .lang button { padding: 7px 10px; }
 }
 
